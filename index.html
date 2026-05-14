@@ -3,109 +3,332 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pointer AI — Releases &amp; Sparkle Appcast</title>
-<meta name="description" content="Auto-update feed and release artifacts for Pointer AI macOS app.">
+<title>Pointer AI — Voice Companion for macOS</title>
+<meta name="description" content="Pointer AI is a macOS menu bar voice companion. Push-to-talk, screen-aware, multi-provider AI voice assistant that lives in your menu bar.">
+<meta property="og:title" content="Pointer AI — Voice Companion for macOS">
+<meta property="og:description" content="A macOS menu bar voice companion. Push-to-talk, screen-aware, multi-provider AI.">
+<meta property="og:url" content="https://poulrohan23.github.io/pointer-ai-releases/">
 <meta name="theme-color" content="#0d0d0d">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAa5JREFUWEftlrFKA0EQhjeKBYIolgqCBcHa0sbCR7C2sxc7wbcw+QYWPomFhYWFhSBYW6iFBUFQBBUEBRX8P5xZxsu5vdwmp8gOt+zM/Hdm2929g39XBv+qMAqIAl4AZ0kXzYqIACOAe8CJIiKizw6QAHYAD1WxRkQ/Ao4Br6piIiLvgF3AM1WsFZFvwE3AS1WsGxFJgF3AcyU2IiSxloAjwOtUbERIYi0BR4DXqbB2hCTWEnAE+JsKW5qIrQH+DIU1ADhSROKJ2Brgn1S4HghJbC0AR4LbqbB2hCTWEnCk+J0K+0i4mYvYGuCw6R4HPAI8VcUaAHhUxEYPAB6qYo2I/AIOAB6rYo2I/AK2AY9VsUZEUoB9wItUbERIYi0BR4DdqTAJSTVKFN0PhQcCQVU3AHim4kZEpA3YBTxT4kaEB1QTsAcYVuW7qCeqGQHUAd2qYg8A0kS9AFyqij1SRLoB9wHPq2KPiHQBHgBeUMUeEekAPAE8V8UeEfkBPAN8UI17s+gDYN9UzFYRqVY2TMWNiFQhG6ZiDxcBHgP6VMUeEfkFHAP6OG2L+Y+gPuAJ4H9V+D8K/Ab18BgMdhYnVgAAAABJRU5ErkJggg=="/>
 <style>
 :root {
   --black: #0d0d0d;
+  --gray-950: #111111;
   --gray-900: #181818;
-  --gray-800: #222;
-  --gray-700: #333;
-  --gray-500: #777;
-  --gray-200: #ccc;
-  --accent: #00c9a7;
+  --gray-800: #222222;
+  --gray-700: #333333;
+  --gray-500: #777777;
+  --gray-400: #999999;
+  --gray-200: #cccccc;
+  --gray-50:  #f5f5f5;
+  --white:    #ffffff;
+  --accent:   #00c9a7;
+  --accent-dim: #009b80;
+  --accent-glow: rgba(0, 201, 167, 0.25);
+  --radius: 14px;
+  --radius-sm: 8px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-font-smoothing: antialiased; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 body {
-  font-family: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
   background: var(--black);
   color: var(--gray-200);
   line-height: 1.6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 40px 24px;
-  text-align: center;
+  overflow-x: hidden;
 }
-.card {
-  background: var(--gray-900);
-  border: 1px solid var(--gray-800);
-  border-radius: 16px;
-  padding: 48px 40px;
-  max-width: 520px;
-  width: 100%;
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: .025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
 }
-h1 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 8px;
-  letter-spacing: -.02em;
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 28px;
+  background: rgba(13,13,13,.75);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid rgba(255,255,255,.06);
 }
-h1 span {
+.nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; color: var(--white); }
+.nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+.nav-links a { font-size: 13px; font-weight: 500; color: var(--gray-400); text-decoration: none; transition: color .2s; }
+.nav-links a:hover { color: var(--white); }
+.hero {
+  position: relative; z-index: 1; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 28px 80px;
+}
+.hero::before {
+  content: '';
+  position: absolute; width: 700px; height: 700px;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-icon {
+  position: relative; width: 88px; height: 88px; margin-bottom: 32px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, var(--accent) 0%, #005a4a 100%);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 60px var(--accent-glow);
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+@keyframes pulse-glow { 0%,100%{box-shadow:0 0 40px var(--accent-glow)} 50%{box-shadow:0 0 80px var(--accent-glow)} }
+.hero h1 {
+  position: relative;
+  font-size: clamp(40px, 7vw, 72px); font-weight: 700;
+  letter-spacing: -.03em; line-height: 1.1; color: var(--white); margin-bottom: 16px;
+}
+.hero h1 span {
   background: linear-gradient(135deg, var(--accent), #6ee7d0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-p { color: var(--gray-500); font-size: 15px; margin-bottom: 32px; }
-.links { display: flex; flex-direction: column; gap: 12px; }
-a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all .2s;
+.hero p { position: relative; font-size: clamp(17px,2.2vw,22px); color: var(--gray-400); max-width: 560px; margin-bottom: 40px; }
+.btn-group { position: relative; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 32px; border-radius: var(--radius);
+  font-size: 15px; font-weight: 600; text-decoration: none;
+  transition: all .25s cubic-bezier(.4,0,.2,1); border: none;
 }
-a.primary {
-  background: var(--accent);
-  color: var(--black);
+.btn-primary { background: var(--accent); color: var(--black); box-shadow: 0 8px 32px var(--accent-glow); }
+.btn-primary:hover { background: #00dbb5; transform: translateY(-2px); box-shadow: 0 12px 48px var(--accent-glow); }
+.btn-secondary { background: var(--gray-900); color: var(--gray-200); border: 1px solid var(--gray-700); }
+.btn-secondary:hover { background: var(--gray-800); border-color: var(--gray-500); transform: translateY(-2px); }
+.btn-small { padding: 8px 18px; font-size: 13px; border-radius: var(--radius-sm); }
+.badge {
+  display: inline-block; padding: 5px 12px; border-radius: 100px;
+  background: rgba(0,201,167,.12); color: var(--accent);
+  font-size: 12px; font-weight: 600; text-transform: uppercase; margin-bottom: 20px;
 }
-a.primary:hover { background: #00dbb5; transform: translateY(-1px); }
-a.secondary {
-  background: transparent;
-  color: var(--gray-200);
-  border: 1px solid var(--gray-700);
+.version-tag { position: relative; font-size: 13px; color: var(--gray-500); margin-top: 16px; }
+.version-tag a { color: var(--gray-400); }
+section { position: relative; z-index: 1; }
+.section-header { text-align: center; max-width: 640px; margin: 0 auto 60px; }
+.section-header h2 { font-size: clamp(28px,4vw,40px); font-weight: 700; color: var(--white); letter-spacing: -.02em; margin-bottom: 12px; }
+.section-header p { font-size: 16px; color: var(--gray-500); }
+#features { padding: 100px 28px; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+.feature-card { background: var(--gray-900); border: 1px solid var(--gray-800); border-radius: var(--radius); padding: 32px; transition: all .3s ease; }
+.feature-card:hover { background: var(--gray-950); border-color: var(--gray-700); transform: translateY(-3px); }
+.feature-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0,201,167,.1); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; color: var(--accent); }
+.feature-card h3 { font-size: 17px; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+.feature-card p { font-size: 14px; color: var(--gray-500); line-height: 1.6; }
+#how-it-works { padding: 100px 28px; background: var(--gray-950); }
+.steps { max-width: 800px; margin: 0 auto; display: grid; gap: 24px; }
+.step { display: flex; gap: 20px; align-items: flex-start; }
+.step-num { flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--accent) 0%, #005a4a 100%); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: var(--black); }
+.step-content h3 { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.step-content p { font-size: 14px; color: var(--gray-500); line-height: 1.6; }
+#permissions { padding: 100px 28px; }
+.perms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; max-width: 900px; margin: 0 auto; }
+.perm-item { background: var(--gray-900); border: 1px solid var(--gray-800); border-radius: var(--radius-sm); padding: 20px 24px; display: flex; align-items: center; gap: 14px; }
+.perm-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.perm-icon.green { background: rgba(0,201,167,.15); color: var(--accent); }
+.perm-icon.blue { background: rgba(59,130,246,.15); color: #3b82f6; }
+.perm-icon.purple { background: rgba(168,85,247,.15); color: #a855f7; }
+.perm-icon.orange { background: rgba(249,115,22,.15); color: #f97316; }
+.perm-item h4 { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+.perm-item p { font-size: 12px; color: var(--gray-500); }
+footer { position: relative; z-index: 1; padding: 48px 28px 32px; border-top: 1px solid var(--gray-900); text-align: center; }
+.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 24px; margin-bottom: 24px; }
+.footer-links a { font-size: 13px; color: var(--gray-500); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--gray-200); }
+footer p { font-size: 12px; color: var(--gray-700); }
+.fade-up { opacity: 0; transform: translateY(20px); animation: fade-up .6s cubic-bezier(.4,0,.2,1) forwards; }
+.fade-up:nth-child(2) { animation-delay: .1s; }
+.fade-up:nth-child(3) { animation-delay: .2s; }
+.fade-up:nth-child(4) { animation-delay: .3s; }
+.fade-up:nth-child(5) { animation-delay: .4s; }
+.fade-up:nth-child(6) { animation-delay: .5s; }
+@keyframes fade-up { to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 640px) {
+  nav { padding: 12px 18px; }
+  .nav-links a:not(.btn) { display: none; }
+  .hero { padding: 100px 18px 60px; }
+  #features, #how-it-works, #permissions { padding: 60px 18px; }
+  .feature-card { padding: 24px; }
+  .step { flex-direction: column; gap: 10px; }
+  .btn-group { flex-direction: column; align-items: stretch; }
+  .btn { justify-content: center; }
 }
-a.secondary:hover { border-color: var(--gray-500); }
-a.mono {
-  font-family: SF Mono, Menlo, monospace;
-  font-size: 13px;
-  color: var(--gray-500);
-  padding: 8px;
-  font-weight: 400;
-}
-a.mono:hover { color: var(--gray-200); }
-hr { border: none; border-top: 1px solid var(--gray-800); margin: 24px 0; }
-small { font-size: 12px; color: var(--gray-700); }
 </style>
 </head>
 <body>
-<div class="card">
-  <h1>Pointer AI <span>Releases</span></h1>
-  <p>Auto-update feed and release artifacts for the macOS voice companion.</p>
-  <div class="links">
-    <a class="primary" href="https://poulrohan23.github.io/pointer-ai/">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Main Site
-    </a>
-    <a class="secondary" href="https://github.com/poulrohan23/pointer-ai-releases/releases/latest/download/PointerAI.dmg">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Download Latest DMG
-    </a>
-    <a class="mono" href="appcast.xml">appcast.xml</a>
+
+<nav>
+  <div class="nav-logo">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+    Pointer AI
   </div>
-  <hr>
-  <small>Sparkle auto-update feed for Pointer AI &middot; macOS 14.2+</small>
-</div>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#permissions">Permissions</a></li>
+    <li><a class="btn btn-primary btn-small" href="PointerAI.dmg" id="downloadBtn">Download</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-icon">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0d0d0d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+  </div>
+  <span class="badge fade-up">Now available for macOS</span>
+  <h1 class="fade-up">Your voice, <span>your screen,</span><br>your AI companion.</h1>
+  <p class="fade-up">Pointer AI lives in your macOS menu bar. Press a hotkey, speak, and let AI see your screen and act on it.</p>
+  <div class="btn-group fade-up" id="downloadGroup">
+    <a class="btn btn-primary" href="PointerAI.dmg" id="mainDownloadBtn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download for macOS
+    </a>
+  </div>
+  <div class="version-tag fade-up">macOS 14.2+ &nbsp;·&nbsp; Universal (Apple Silicon + Intel) &nbsp;·&nbsp; <a href="https://github.com/poulrohan23/pointer-ai/releases" id="releaseNotesLink">Release notes</a></div>
+</section>
+
+<section id="features">
+  <div class="section-header fade-up">
+    <h2>Everything you need,<br>nothing you don't.</h2>
+    <p>Purpose-built for macOS — minimal footprint, maximum capability.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card fade-up">
+      <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div>
+      <h3>Push-to-Talk</h3>
+      <p>Hold <kbd>⌃</kbd><kbd>⌥</kbd> to speak. Release to send. Your AI hears you, sees your screen, and responds instantly.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+      <h3>Screen-Aware AI</h3>
+      <p>The AI sees your screen via streaming screenshots. Point at anything — it understands context and can act on UI elements.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+      <h3>Multi-Provider</h3>
+      <p>Gemini Live, OpenAI, OpenRouter, LM Studio, Ollama — choose your voice backend. Switch providers from the panel.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-4.5L15 4h-6l-.5 3H4v4h16z"/><circle cx="9" cy="13" r="3"/><circle cx="15" cy="13" r="3"/><path d="M9 16v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2"/></svg></div>
+      <h3>Autopilot Mode</h3>
+      <p>Tell the AI a goal — it plans steps, executes them, and shows you what happened. Full CUA action pipeline built in.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+      <h3>BYOK — Your Key, Your Data</h3>
+      <p>Bring your own API key. No data leaves your configured provider. Source builds require no backend — just paste your key.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h3>Auto-Updates</h3>
+      <p>Sparkle-powered background updates. Always run the latest version. Download once, stay up to date automatically.</p>
+    </div>
+  </div>
+</section>
+
+<section id="how-it-works">
+  <div class="section-header fade-up">
+    <h2>How it works</h2>
+    <p>One hotkey, three steps.</p>
+  </div>
+  <div class="steps">
+    <div class="step fade-up">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Press to talk</h3>
+        <p>Hold <kbd>Ctrl</kbd> + <kbd>Option</kbd>. The menu bar icon glows — the AI is listening. Speak naturally, describe what you need.</p>
+      </div>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>AI sees &amp; understands</h3>
+        <p>The AI processes your voice, reads your screen via streaming screenshots, and reasons about what you're looking at.</p>
+      </div>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>AI responds &amp; acts</h3>
+        <p>The AI replies in voice, highlights elements on your screen, and can execute multi-step action plans on your behalf.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="permissions">
+  <div class="section-header fade-up">
+    <h2>Required permissions</h2>
+    <p>Pointer AI needs these permissions to function. All processing stays local or with your configured provider.</p>
+  </div>
+  <div class="perms-grid">
+    <div class="perm-item fade-up">
+      <div class="perm-icon green"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div><h4>Accessibility</h4><p>Read UI element positions and interact with apps</p></div>
+    </div>
+    <div class="perm-item fade-up">
+      <div class="perm-icon blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+      <div><h4>Screen Recording</h4><p>Capture screenshots so the AI can see your screen</p></div>
+    </div>
+    <div class="perm-item fade-up">
+      <div class="perm-icon purple"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+      <div><h4>Microphone</h4><p>Capture voice input for push-to-talk</p></div>
+    </div>
+    <div class="perm-item fade-up">
+      <div class="perm-icon orange"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+      <div><h4>Screen Content</h4><p>Read visible content for context-aware AI actions</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-links">
+    <a href="appcast.xml" target="_blank" rel="noopener">Auto-Update Feed</a>
+    <a href="https://poulrohan23.github.io/pointer-ai-releases/">Home</a>
+    <a href="PointerAI.dmg" id="footerDownload">Download DMG</a>
+  </div>
+  <p>&copy; 2026 Pointer AI. All rights reserved.</p>
+</footer>
+
+<script>
+(async function() {
+  const DL_URL = 'https://github.com/poulrohan23/pointer-ai-releases/releases/latest/download/PointerAI.dmg';
+  const LATEST_URL = 'https://github.com/poulrohan23/pointer-ai/releases/latest';
+  const links = document.querySelectorAll('#downloadBtn, #mainDownloadBtn, #footerDownload');
+  const releaseLink = document.getElementById('releaseNotesLink');
+
+  try {
+    const resp = await fetch(DL_URL, { method: 'HEAD' });
+    if (resp.ok || resp.status === 302 || resp.status === 307) {
+      links.forEach(el => el.href = DL_URL);
+      if (releaseLink) releaseLink.href = LATEST_URL;
+    } else {
+      throw new Error('No release yet');
+    }
+  } catch {
+    links.forEach(el => {
+      el.href = '#';
+      el.style.opacity = '0.5';
+      el.style.cursor = 'default';
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('downloadGroup') || el;
+        const msg = document.createElement('p');
+        msg.style.cssText = 'color:var(--gray-500);font-size:14px;margin-top:12px;';
+        msg.textContent = 'First release is being prepared. Check back soon!';
+        btn.parentNode.insertBefore(msg, btn.nextSibling);
+        setTimeout(() => msg.remove(), 5000);
+      });
+    });
+    if (releaseLink) {
+      releaseLink.href = '#';
+      releaseLink.addEventListener('click', (e) => e.preventDefault());
+    }
+  }
+})();
+</script>
 </body>
 </html>
