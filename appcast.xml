@@ -5,5 +5,13 @@
         <link>https://poulrohan23.github.io/pointer-ai-releases/appcast.xml</link>
         <description>Most recent changes for Pointer AI.</description>
         <language>en</language>
+        <item>
+            <title>0.1</title>
+            <pubDate>Thu, 14 May 2026 00:36:24 -0400</pubDate>
+            <sparkle:version>1</sparkle:version>
+            <sparkle:shortVersionString>0.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.2</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/poulrohan23/pointer-ai-releases/releases/download/v0.1/PointerAI.dmg" length="5801208" type="application/octet-stream"/>
+        </item>
     </channel>
 </rss>
