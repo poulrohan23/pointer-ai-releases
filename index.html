@@ -1,23 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pointer AI Releases</title>
-    <style>
-        body { font-family: -apple-system, system-ui, sans-serif; max-width: 640px; margin: 80px auto; padding: 0 20px; color: #333; line-height: 1.6; }
-        h1 { color: #000; }
-        a { color: #0066cc; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        pre { background: #f5f5f5; padding: 12px; border-radius: 6px; overflow-x: auto; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pointer AI — Releases &amp; Sparkle Appcast</title>
+<meta name="description" content="Auto-update feed and release artifacts for Pointer AI macOS app.">
+<meta name="theme-color" content="#0d0d0d">
+<style>
+:root {
+  --black: #0d0d0d;
+  --gray-900: #181818;
+  --gray-800: #222;
+  --gray-700: #333;
+  --gray-500: #777;
+  --gray-200: #ccc;
+  --accent: #00c9a7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; }
+body {
+  font-family: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
+  background: var(--black);
+  color: var(--gray-200);
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 24px;
+  text-align: center;
+}
+.card {
+  background: var(--gray-900);
+  border: 1px solid var(--gray-800);
+  border-radius: 16px;
+  padding: 48px 40px;
+  max-width: 520px;
+  width: 100%;
+}
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -.02em;
+}
+h1 span {
+  background: linear-gradient(135deg, var(--accent), #6ee7d0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+p { color: var(--gray-500); font-size: 15px; margin-bottom: 32px; }
+.links { display: flex; flex-direction: column; gap: 12px; }
+a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all .2s;
+}
+a.primary {
+  background: var(--accent);
+  color: var(--black);
+}
+a.primary:hover { background: #00dbb5; transform: translateY(-1px); }
+a.secondary {
+  background: transparent;
+  color: var(--gray-200);
+  border: 1px solid var(--gray-700);
+}
+a.secondary:hover { border-color: var(--gray-500); }
+a.mono {
+  font-family: SF Mono, Menlo, monospace;
+  font-size: 13px;
+  color: var(--gray-500);
+  padding: 8px;
+  font-weight: 400;
+}
+a.mono:hover { color: var(--gray-200); }
+hr { border: none; border-top: 1px solid var(--gray-800); margin: 24px 0; }
+small { font-size: 12px; color: var(--gray-700); }
+</style>
 </head>
 <body>
-    <h1>Pointer AI Releases</h1>
-    <p>This site hosts the Sparkle auto-update feed for <a href="https://github.com/poulrohan23/pointer-ai">Pointer AI</a>.</p>
-    <p>Latest release: <a href="https://github.com/poulrohan23/pointer-ai-releases/releases/latest">Download DMG</a></p>
-    <p>Appcast feed: <a href="appcast.xml">appcast.xml</a></p>
-    <hr>
-    <pre>Pointer AI — macOS menu bar voice companion.</pre>
+<div class="card">
+  <h1>Pointer AI <span>Releases</span></h1>
+  <p>Auto-update feed and release artifacts for the macOS voice companion.</p>
+  <div class="links">
+    <a class="primary" href="https://poulrohan23.github.io/pointer-ai/">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Main Site
+    </a>
+    <a class="secondary" href="https://github.com/poulrohan23/pointer-ai-releases/releases/latest/download/PointerAI.dmg">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download Latest DMG
+    </a>
+    <a class="mono" href="appcast.xml">appcast.xml</a>
+  </div>
+  <hr>
+  <small>Sparkle auto-update feed for Pointer AI &middot; macOS 14.2+</small>
+</div>
 </body>
 </html>
